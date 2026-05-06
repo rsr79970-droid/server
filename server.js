@@ -6,7 +6,7 @@ import cors from "cors";
 import "dotenv/config";
 
 import { connectDB } from "./configs/db.js";
-import { clerkMiddleware } from "@clerk/express";
+import { clerkMiddleware, getAuth } from "@clerk/express";
 import { serve } from "inngest/express";
 
 import { inngest, functions } from "./inngest/index.js";
@@ -50,6 +50,11 @@ app.use(
     functions,
   }),
 );
+
+app.use((req, res, next) => {
+  console.log("AUTH:", getAuth(req));
+  next();
+});
 
 app.use("/api/show", showRouter);
 app.use("/api/booking", bookingRouter);
