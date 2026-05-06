@@ -14,7 +14,9 @@ export const isAdmin = async (req, res) => {
       });
     }
 
-    const user = await clerkClient.users.getUser(userId);
+    const client = await clerkClient();
+
+    const user = await client.users.getUser(userId);
 
     const isAdmin = user.privateMetadata?.role === "admin";
 
@@ -23,6 +25,8 @@ export const isAdmin = async (req, res) => {
       isAdmin,
     });
   } catch (error) {
+    console.log(error.message);
+
     res.status(401).json({
       success: false,
       isAdmin: false,
@@ -50,7 +54,11 @@ export const getDashboardData = async (req, res) => {
     res.json({ success: true, dashboardData });
   } catch (error) {
     console.log(error.message);
-    res.json({ success: false, message: error.message });
+
+    res.json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -60,10 +68,17 @@ export const getAllShows = async (req, res) => {
       showDataTime: { $gte: new Date() },
     }).populate("movie");
 
-    res.json({ success: true, shows });
+    res.json({
+      success: true,
+      shows,
+    });
   } catch (error) {
     console.log(error.message);
-    res.json({ success: false, message: error.message });
+
+    res.json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 
@@ -73,13 +88,22 @@ export const getAllBookings = async (req, res) => {
       .populate("user")
       .populate({
         path: "show",
-        populate: { path: "movie" },
+        populate: {
+          path: "movie",
+        },
       })
       .sort({ createdAt: -1 });
 
-    res.json({ success: true, bookings });
+    res.json({
+      success: true,
+      bookings,
+    });
   } catch (error) {
     console.log(error.message);
-    res.json({ success: false, message: error.message });
+
+    res.json({
+      success: false,
+      message: error.message,
+    });
   }
 };
