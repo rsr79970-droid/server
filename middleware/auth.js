@@ -15,7 +15,7 @@ export const protectAuth = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(401).json({
+    res.status(401).json({
       success: false,
       message: "Unauthorized",
     });
@@ -46,7 +46,7 @@ export const protectAdmin = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(401).json({
+    res.status(401).json({
       success: false,
       message: "Unauthorized",
     });
