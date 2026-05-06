@@ -54,7 +54,7 @@ export const createBooking = async (req, res) => {
     await showData.save();
 
     //Stripe Gateway Intialize
-    const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
+    const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
 
     //creating line items to for stripe
     const line_items = [{
